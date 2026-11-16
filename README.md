@@ -7,7 +7,7 @@ It ships **TypeScript source and CSS** (no build step). Tokens, light/dark theme
 ## Install
 
 ```bash
-npm i github:akashp50-cpu/inn360-ui#v0.1.0
+npm i git+https://github.com/akashp50-cpu/inn360-ui.git#v0.1.0
 ```
 
 Two lines of consumer config:
@@ -91,7 +91,7 @@ Module-specific pieces stay in the module and come in as props: nav groups/items
 ## Changing the design
 
 1. Edit this package (tokens in `src/styles/tokens.css`, components in `src/`).
-2. `npx tsc --noEmit`, then commit and tag a new version (`git tag v0.1.1 && git push --tags`).
-3. In each module: `npm i github:akashp50-cpu/inn360-ui#v0.1.1`, check it visually, deploy.
+2. `npx tsc --noEmit`, commit to `main`, then publish the version as a tag or branch named `v0.1.1` (`git push origin main:refs/heads/v0.1.1` works where tags can't be pushed). Never move a published version afterwards.
+3. In each module: `npm i git+https://github.com/akashp50-cpu/inn360-ui.git#v0.1.1`, check it visually, deploy. Use the `git+https` form: Render can install it without SSH keys.
 
-Only bump a module when you are ready for it to change; modules pinned to an older tag keep their look.
+Only bump a module when you are ready for it to change; modules pinned to an older version keep their look.

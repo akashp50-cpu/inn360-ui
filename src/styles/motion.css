@@ -1,0 +1,87 @@
+/* INN360 motion (from the approved Claude Design canvas).
+   Always-on card glow, light run around hovered controls, page title shine, slow background drift.
+   Everything stops under prefers-reduced-motion. */
+
+@property --ang {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes ls-spin { to { --ang: 360deg; } }
+@keyframes ls-glow {
+  from { box-shadow: 0 0 0 1px var(--glowA), 0 0 16px 0 var(--glowA), 0 2px 8px rgba(0, 0, 0, 0.05); }
+  to { box-shadow: 0 0 0 1px var(--glowB), 0 0 40px 4px var(--glowB), 0 2px 8px rgba(0, 0, 0, 0.05); }
+}
+@keyframes ls-drift { 0% { background-position: 0% 0%; } 100% { background-position: 100% 70%; } }
+@keyframes ls-title { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+@keyframes ls-dialog { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+body {
+  background-size: 140% 140%;
+  animation: ls-drift 28s ease-in-out infinite alternate;
+}
+
+/* Card glow: every glass card in the page and the sidebar. */
+:root { --glowA: rgba(61, 139, 255, 0.18); --glowB: rgba(61, 139, 255, 0.42); }
+[data-theme='dark'] { --glowA: rgba(212, 175, 55, 0.09); --glowB: rgba(212, 175, 55, 0.22); }
+main .glass,
+main .ls-card,
+.ls-sidebar {
+  animation: ls-glow 5.5s 0.8s ease-in-out infinite alternate;
+}
+main > .glass,
+main > .ls-card {
+  animation: ls-rise 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both, ls-glow 5.5s 0.8s ease-in-out infinite alternate;
+}
+main .glass:hover, main .ls-card:hover { --glowA: rgba(61, 139, 255, 0.3); --glowB: rgba(61, 139, 255, 0.55); }
+[data-theme='dark'] main .glass:hover, [data-theme='dark'] main .ls-card:hover { --glowA: rgba(212, 175, 55, 0.2); --glowB: rgba(212, 175, 55, 0.4); }
+.ls-sidebar { --glowA: rgba(61, 139, 255, 0.12); --glowB: rgba(61, 139, 255, 0.28); }
+[data-theme='dark'] .ls-sidebar { --glowA: rgba(212, 175, 55, 0.08); --glowB: rgba(212, 175, 55, 0.18); }
+
+/* Light run around the hovered control. */
+.ls-run { position: relative; }
+.ls-run::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--ang), transparent 0 55%, var(--run1, #3d8bff) 78%, var(--run2, #b9dcff) 90%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  animation: ls-spin 2.2s linear infinite;
+  pointer-events: none;
+}
+.ls-run:hover::before,
+.ls-run:focus-visible::before { opacity: 1; }
+.ls-run-solid { --run1: #ffffff; --run2: #a8d4ff; }
+[data-theme='dark'] .ls-run { --run1: #d4af37; --run2: #f6e3a1; }
+[data-theme='dark'] .ls-run-solid { --run1: #fff6d8; --run2: #f6e3a1; }
+
+/* Page title shine (runs once). */
+.ls-title {
+  background-image: linear-gradient(90deg, var(--ink) 0%, var(--ink) 42%, #3d8bff 50%, var(--ink) 58%, var(--ink) 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ls-title 2.2s 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+[data-theme='dark'] .ls-title {
+  background-image: linear-gradient(90deg, var(--ink) 0%, var(--ink) 42%, #e9c964 50%, var(--ink) 58%, var(--ink) 100%);
+}
+
+.ls-dialog { animation: ls-dialog 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  main .glass,
+  main .ls-card,
+  .ls-sidebar,
+  .ls-run::before,
+  .ls-dialog { animation: none !important; }
+  .ls-title { animation: none; color: var(--ink); background: none; }
+}

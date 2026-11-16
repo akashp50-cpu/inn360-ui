@@ -1,0 +1,14 @@
+/*
+ * @inn360/ui styles. One entry; the consumer imports it after Tailwind:
+ *   @import "tailwindcss";
+ *   @import "@inn360/ui/styles.css";
+ *   @source "../node_modules/@inn360/ui/src";
+ * Order matters and matches the original Lotus Supply cascade:
+ * tokens, base, components (glass, ls-* helpers), motion, canvas kit.
+ */
+@import "tw-animate-css";
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./motion.css";
+@import "./canvas.css";

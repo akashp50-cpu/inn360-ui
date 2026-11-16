@@ -1,0 +1,174 @@
+/* @inn360/ui design tokens: light + dark values, accent slots (recomputed at runtime by theme/accent.ts) and the Tailwind theme. */
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* ---------- tokens ---------- */
+:root {
+  color-scheme: light;
+  --ink: #0a1317;
+  --ink2: #1b2a35;
+  --ink3: #4e606f;
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass2: rgba(255, 255, 255, 0.55);
+  --glass3: rgba(255, 255, 255, 0.94);
+  --solid: #f7f8fb;
+  --edge: rgba(255, 255, 255, 0.85);
+  --line: rgba(10, 19, 23, 0.1);
+  --line2: rgba(10, 19, 23, 0.16);
+  --pill: #0a1317;
+  --pillink: #ffffff;
+  --shadow: 0 1px 1px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-pop: 0 18px 50px rgba(20, 30, 60, 0.18), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+
+  --accent: #0064e0;
+  --accent2: #4d93ea;
+  --accentsoft: rgba(0, 100, 224, 0.12);
+  --accent-ink: #0055c0; /* accent used as text: always >= 4.5:1 on glass */
+  --on-accent: #ffffff;
+  --bg: linear-gradient(160deg, #eef4fb, #dce7f4);
+  --hero: linear-gradient(150deg, #3a5482, #1f3a6e);
+
+  --ok: #17784a;
+  --bad: #b3382c;
+  --warn: #8a5a09;
+  --oksoft: rgba(23, 120, 74, 0.12);
+  --badsoft: rgba(179, 56, 44, 0.1);
+  --warnsoft: rgba(196, 138, 30, 0.14);
+
+  --s1: #2c5fa8;
+  --s2: #0f9d8c;
+  --s3: #b8791a;
+  --s4: #8a4fb0;
+  --s5: #c4456b;
+  --prior: rgba(90, 100, 120, 0.3);
+
+  --radius-card: 16px;
+  --radius-inner: 12px;
+  --radius-ctl: 10px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* shadcn compatibility (so stock shadcn classes resolve to glass tokens) */
+  --background: var(--solid);
+  --foreground: var(--ink);
+  --card: var(--glass);
+  --card-foreground: var(--ink);
+  --popover: var(--glass3);
+  --popover-foreground: var(--ink);
+  --primary: var(--pill);
+  --primary-foreground: var(--pillink);
+  --secondary: var(--glass2);
+  --secondary-foreground: var(--ink);
+  --muted: var(--glass2);
+  --muted-foreground: var(--ink3);
+  --destructive: var(--bad);
+  --destructive-foreground: #ffffff;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--accent);
+  --radius: 0.75rem;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f3eee2;
+  --ink2: #d9d2c2;
+  --ink3: #a89f8a;
+  --glass: rgba(24, 22, 17, 0.8);
+  --glass2: rgba(255, 255, 255, 0.04);
+  --glass3: rgba(23, 21, 15, 0.97);
+  --solid: #0e0d0b;
+  --edge: rgba(212, 175, 55, 0.26);
+  --line: rgba(212, 175, 55, 0.14);
+  --line2: rgba(212, 175, 55, 0.3);
+  --pill: #d4af37;
+  --pillink: #14120e;
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 18px 50px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  --accent-ink: #e9c964;
+  --accent: #d4af37;
+  --accent2: #e9c964;
+  --accentsoft: rgba(212, 175, 55, 0.16);
+  --on-accent: #14120e;
+
+  --ok: #4cc08a;
+  --bad: #f07a6c;
+  --warn: #e5b04e;
+  --oksoft: rgba(76, 192, 138, 0.14);
+  --badsoft: rgba(240, 122, 108, 0.14);
+  --warnsoft: rgba(229, 176, 78, 0.14);
+
+  --s1: #4f86d9;
+  --s2: #1fa595;
+  --s3: #b8812a;
+  --s4: #9a6fcf;
+  --s5: #d65f82;
+  --prior: rgba(200, 205, 220, 0.22);
+}
+
+/* Tailwind theme: utilities like bg-glass, text-ink3, border-line, text-ok */
+@theme inline {
+  --font-sans: var(--font);
+  --font-mono: var(--mono);
+
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
+  --color-glass: var(--glass);
+  --color-glass2: var(--glass2);
+  --color-glass3: var(--glass3);
+  --color-edge: var(--edge);
+  --color-line: var(--line);
+  --color-pill: var(--pill);
+  --color-pillink: var(--pillink);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent2);
+  --color-accentsoft: var(--accentsoft);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-ok: var(--ok);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --color-oksoft: var(--oksoft);
+  --color-badsoft: var(--badsoft);
+  --color-warnsoft: var(--warnsoft);
+  --color-s1: var(--s1);
+  --color-s2: var(--s2);
+  --color-s3: var(--s3);
+  --color-s4: var(--s4);
+  --color-s5: var(--s5);
+  --color-prior: var(--prior);
+
+  /* shadcn names */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-card: var(--radius-card);
+  --radius-inner: var(--radius-inner);
+  --radius-ctl: var(--radius-ctl);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --ease-glass: var(--ease);
+  --shadow-glass: var(--shadow);
+  --shadow-pop: var(--shadow-pop);
+}
+

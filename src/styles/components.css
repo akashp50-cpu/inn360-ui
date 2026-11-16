@@ -1,0 +1,415 @@
+/* Glass surfaces, helpers, keyframes, reduced motion, canvas boxes/chips. */
+
+/* ---------- surfaces & motion ---------- */
+@layer components {
+  .glass {
+    background: var(--glass);
+    border: 1px solid var(--edge);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius-card);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+  .glass-pop {
+    background: var(--glass3);
+    border: 1px solid var(--edge);
+    box-shadow: var(--shadow-pop);
+    backdrop-filter: blur(30px) saturate(170%);
+    -webkit-backdrop-filter: blur(30px) saturate(170%);
+  }
+  .glass-inset {
+    background: var(--glass2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-inner);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass,
+    .glass-pop {
+      background: var(--glass3);
+    }
+  }
+
+  .ls-orbs {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ls-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+    animation: ls-floaty 16s ease-in-out infinite;
+  }
+  .ls-orb.a {
+    width: 420px;
+    height: 420px;
+    left: -120px;
+    top: -140px;
+    background: var(--accent2);
+  }
+  .ls-orb.b {
+    width: 360px;
+    height: 360px;
+    right: -100px;
+    top: 30%;
+    background: var(--s2);
+    opacity: 0.2;
+    animation-delay: -6s;
+  }
+
+  .rise {
+    animation: ls-rise 0.7s var(--ease) both;
+  }
+  .lift {
+    transition:
+      transform 0.35s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+  }
+  .grow-y {
+    transform-origin: 50% 100%;
+    animation: ls-grow-y 0.9s var(--ease) both;
+  }
+  .grow-x {
+    transform-origin: 0 50%;
+    animation: ls-grow-x 0.9s var(--ease) both;
+  }
+  .ls-ring-arc {
+    transition: stroke-dashoffset 1.2s var(--ease);
+  }
+  .ls-progress {
+    position: relative;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .ls-progress > i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    animation: ls-slide 1.4s ease-in-out infinite;
+  }
+  .ls-shimmer {
+    background: linear-gradient(90deg, var(--glass2) 0%, var(--glass3) 50%, var(--glass2) 100%);
+    background-size: 200% 100%;
+    animation: ls-shimmer 1.6s ease-in-out infinite;
+  }
+
+  /* text helpers */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .ls-link {
+    color: var(--accent-ink);
+    font-weight: 550;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+  .ls-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* native select, glass styled */
+  .ls-select {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--line);
+    background: var(--glass2)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' fill='none' stroke-width='1.5'/%3E%3C/svg%3E")
+      no-repeat right 10px center;
+    border-radius: var(--radius-ctl);
+    padding: 7px 28px 7px 11px;
+    min-height: 36px;
+    max-width: 100%;
+    color: var(--ink);
+    transition:
+      border-color 0.2s,
+      background-color 0.2s;
+  }
+  .ls-select:hover {
+    border-color: var(--line2);
+  }
+  .ls-select option {
+    background: var(--solid);
+    color: var(--ink);
+  }
+
+  /* data table */
+  .ls-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-variant-numeric: tabular-nums;
+  }
+  .ls-table th,
+  .ls-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .ls-table th {
+    font-size: 12px;
+    color: var(--ink3);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .ls-table.sticky thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--glass3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .ls-table .num {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ls-table tbody tr.clk {
+    cursor: pointer;
+  }
+  .ls-table tbody tr.clk td {
+    transition: background-color 0.2s;
+  }
+  .ls-table tbody tr.clk:hover td {
+    background: var(--glass2);
+  }
+  .ls-table tbody tr[aria-selected="true"] td {
+    background: var(--accentsoft);
+  }
+  .ls-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .ls-table tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink2);
+  }
+  /* dense work tables (Orders, Products) */
+  .ls-table.dense th,
+  .ls-table.dense td {
+    padding: 7px 9px;
+    vertical-align: middle;
+    font-size: 13.5px;
+  }
+  .ls-table.dense th {
+    font-size: 11.5px;
+    text-transform: none;
+  }
+  .ls-table tbody tr[data-active="true"] td {
+    background: var(--glass2);
+  }
+  .ls-table tbody tr[data-active="true"] td:first-child {
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .ls-table tbody tr[data-checked="true"] td {
+    background: var(--accentsoft);
+  }
+  .ls-table tbody tr:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+}
+
+/* ---------- keyframes ---------- */
+@keyframes ls-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes ls-floaty {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translate(22px, -16px);
+  }
+}
+@keyframes ls-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes ls-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ls-slide {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+@keyframes ls-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+@keyframes ls-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- reduced motion: one off-switch ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .ls-orb,
+  .grow-y,
+  .grow-x,
+  .ls-progress > i,
+  .ls-shimmer,
+  .ls-toast {
+    animation: none !important;
+  }
+  .lift,
+  .ls-ring-arc,
+  .ls-table tbody tr.clk td {
+    transition: none !important;
+  }
+  .lift:hover {
+    transform: none;
+  }
+  *,
+  ::before,
+  ::after {
+    scroll-behavior: auto !important;
+  }
+}
+/* Storybook / screenshot switch: <html data-motion="off"> */
+[data-motion="off"] .rise,
+[data-motion="off"] .ls-orb,
+[data-motion="off"] .grow-y,
+[data-motion="off"] .grow-x {
+  animation: none !important;
+}
+
+/* ---------- canvas redesign: white boxes, dark glass, logos ---------- */
+@layer components {
+  .ls-box {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(10, 19, 23, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  [data-theme="dark"] .ls-box {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(212, 175, 55, 0.18);
+    box-shadow: none;
+  }
+  [data-theme="dark"] .glass {
+    background: linear-gradient(160deg, rgba(30, 27, 21, 0.78), rgba(14, 13, 11, 0.78));
+  }
+  [data-theme="dark"] .ls-lotus {
+    filter: brightness(0) saturate(100%) invert(74%) sepia(52%) saturate(520%) hue-rotate(5deg) brightness(95%);
+  }
+  [data-theme="dark"] .ls-prop-logo {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  }
+  /* vendor logos sit on a small white tag in dark mode so the real colors stay readable */
+  [data-theme="dark"] .ls-vendor-logo {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 3px 5px;
+    box-sizing: content-box;
+  }
+}
+@layer components {
+  .ls-chip {
+    border: 1px solid rgba(10, 19, 23, 0.1);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--ink);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.25s var(--ease), box-shadow 0.25s ease;
+  }
+  .ls-chip:hover {
+    background: #ffffff;
+    border-color: rgba(10, 19, 23, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(10, 40, 90, 0.1);
+  }
+  [data-theme="dark"] .ls-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(212, 175, 55, 0.22);
+  }
+  [data-theme="dark"] .ls-chip:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.45);
+  }
+  .ls-segs {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  [data-theme="dark"] .ls-segs {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(212, 175, 55, 0.22);
+    box-shadow: none;
+  }
+  .ls-seg {
+    min-height: 38px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink3);
+    white-space: nowrap;
+    transition: background 0.3s var(--ease), color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .ls-seg:hover {
+    color: var(--ink);
+  }
+  .ls-seg[aria-checked="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
